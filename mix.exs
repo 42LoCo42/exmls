@@ -20,7 +20,8 @@ defmodule ExMLS.MixProject do
 
   defp deps do
     [
-      {:bandit, "~> 0.6"}
+      {:bandit, "~> 0.7.7"},
+      {:websock_adapter, "~> 0.5.4"}
     ]
   end
 end

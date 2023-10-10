@@ -13,7 +13,7 @@
           pname = "mix-deps-${pname}";
           inherit version src;
 
-          hash = "sha256-J1gAURci95hQWVb3bHnqL7WFfKB1siQPJ9BxyOxl4OQ=";
+          hash = "sha256-CDaL9gNru3VAGysDKmIDN/uhu+bCcop19BvmtDrz7FU=";
         };
       in
       {
