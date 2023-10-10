@@ -3,20 +3,14 @@ defmodule ExMLS do
 
   @impl true
   def start(_type, _args) do
-    IO.puts("Hello, #{hello()}!")
-    {:ok, self()}
-  end
+    children = [
+      {
+        Bandit,
+        plug: Web.Hello, port: 37812
+      }
+    ]
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> ExMLS.hello()
-      :world
-
-  """
-  def hello do
-    :world
+    opts = [strategy: :one_for_one, name: ExMLS.Supervisor]
+    Supervisor.start_link(children, opts)
   end
 end

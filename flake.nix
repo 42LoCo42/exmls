@@ -5,12 +5,20 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
+        pname = "exmls";
+        version = "0.1.0";
+        src = ./.;
+
+        mixFodDeps = pkgs.beamPackages.fetchMixDeps {
+          pname = "mix-deps-${pname}";
+          inherit version src;
+
+          hash = "sha256-J1gAURci95hQWVb3bHnqL7WFfKB1siQPJ9BxyOxl4OQ=";
+        };
       in
       {
         defaultPackage = pkgs.beamPackages.mixRelease {
-          pname = "exmls";
-          version = "0.1.0";
-          src = ./.;
+          inherit pname version src mixFodDeps;
 
           nativeBuildInputs = with pkgs; [
             elixir_1_15
