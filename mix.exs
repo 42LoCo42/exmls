@@ -7,7 +7,12 @@ defmodule ExMLS.MixProject do
       version: "0.1.0",
       elixir: "~> 1.15",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      releases: [
+        exmls: [
+          steps: [:assemble, &Bakeware.assemble/1]
+        ]
+      ]
     ]
   end
 
@@ -21,7 +26,8 @@ defmodule ExMLS.MixProject do
   defp deps do
     [
       {:bandit, "~> 0.7.7"},
-      {:websock_adapter, "~> 0.5.4"}
+      {:websock_adapter, "~> 0.5.4"},
+      {:bakeware, "~> 0.2.4"}
     ]
   end
 end
