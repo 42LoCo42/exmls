@@ -25,9 +25,12 @@ defmodule ExMLS.MixProject do
 
   defp deps do
     [
+      {:bakeware, "~> 0.2.4"},
       {:bandit, "~> 0.7.7"},
-      {:websock_adapter, "~> 0.5.4"},
-      {:bakeware, "~> 0.2.4"}
+      {:dialyxir, "~> 1.4", only: [:dev], runtime: false},
+      {:enum_type, "~> 1.1"},
+      {:typed_struct, "~> 0.3.0"},
+      {:websock_adapter, "~> 0.5.4"}
     ]
   end
 end
