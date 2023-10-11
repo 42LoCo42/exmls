@@ -8,6 +8,10 @@ defmodule Web.Hello do
   # use Plug.Debugger
 
   plug(Plug.Logger)
+
+  plug(Plug.Static, at: "/", only: ["favicon.ico"], from: :exmls)
+  plug(Plug.Static, at: "/static", from: :exmls)
+
   plug(:match)
   plug(:dispatch)
 
