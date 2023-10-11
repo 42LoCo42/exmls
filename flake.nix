@@ -13,7 +13,7 @@
           pname = "mix-deps-${pname}";
           inherit version src;
 
-          hash = "sha256-yAkjWz/DE4PdLMV6aJ8tRo0atGVN13rljanAilfJbQ8=";
+          hash = "sha256-wU56kAREfovnqFCz7tU+3T0Q8TEyf7gzKUD8FsEzCls=";
         };
       in
       {
@@ -39,6 +39,7 @@
             beamPackages.hex
             elixir-ls
             elixir_1_15
+            just
           ];
         };
       });
