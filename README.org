@@ -1,0 +1,20 @@
+* ExMLS - MLS in Elixir
+This is (or rather, is going to be) an implementation of the
+Messaging Layer Security (MLS) Protocol, as defined by the [[https://www.rfc-editor.org/rfc/rfc9420][RFC 9420]].
+
+** Why Elixir?
+Because I always wanted an excuse to learn the language.
+Also, there is currently no MLS implementation for Elixir (2023-10-11).
+
+** Current Status
+All the types (structs, enums, opaques) of the RFC are implemented.
+
+** How to use this project
+If you have [[https://nixos.org/][Nix]] installed, just run ~nix build~.
+This currently builds a self-contained binary using [[https://github.com/bake-bake-bake/bakeware][Bakeware]].
+You can also ~direnv allow~ or ~nix develop~ to enter a development environment.
+A testsuite is defined in the [[file:Justfile]], run ~just test~.
+
+** Ultimate goals
+- a complete implementation of MLS, conforming to the RFC
+- an example chat client & server using the implementation
