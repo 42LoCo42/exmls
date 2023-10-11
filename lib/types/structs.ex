@@ -1,6 +1,4 @@
 defmodule Structs do
-  alias Enums.ProposalType.GroupContextExtensions
-  alias Enums.ExtensionType.RequiredCapabilities
   use TypedStruct
 
   # 5.1.2. Signing
@@ -414,7 +412,7 @@ defmodule Structs do
 
   typedstruct(module: GroupSecret, enforce: true) do
     field(:joiner_secret, binary())
-    field(:path_secret, Structs.PathSecret, enforce: false)
+    field(:path_secret, Structs.PathSecret.t(), enforce: false)
     field(:psks, [Structs.PreSharedKeyID.t()])
   end
 
