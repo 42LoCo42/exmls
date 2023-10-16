@@ -7,21 +7,22 @@
         pkgs = import nixpkgs { inherit system; };
         pname = "exmls";
         version = "0.1.0";
+        elixir = pkgs.elixir_1_15;
         src = ./.;
 
         mixFodDeps = pkgs.beamPackages.fetchMixDeps {
           pname = "mix-deps-${pname}";
-          inherit version src;
+          inherit version elixir src;
 
           hash = "sha256-wU56kAREfovnqFCz7tU+3T0Q8TEyf7gzKUD8FsEzCls=";
         };
       in
-      {
+      rec {
         defaultPackage = pkgs.beamPackages.mixRelease {
-          inherit pname version src mixFodDeps;
+          inherit pname version elixir src mixFodDeps;
 
           nativeBuildInputs = with pkgs; [
-            elixir_1_15
+            gleam
             zstd
           ];
 
@@ -34,11 +35,10 @@
         };
 
         devShell = pkgs.mkShell {
+          inputsFrom = [ defaultPackage ];
           packages = with pkgs; [
             bashInteractive
-            beamPackages.hex
             elixir-ls
-            elixir_1_15
             just
           ];
         };

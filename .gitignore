@@ -29,3 +29,4 @@ example-*.tar
 /.direnv
 /.env
 /result
+/build
