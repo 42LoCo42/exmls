@@ -1,7 +1,7 @@
 {
   description = "Elixir implementation of the MLS protocol";
 
-  outputs = { self, nixpkgs, flake-utils }:
+  outputs = { nixpkgs, flake-utils, ... }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
@@ -14,7 +14,7 @@
           pname = "mix-deps-${pname}";
           inherit version elixir src;
 
-          hash = "sha256-wU56kAREfovnqFCz7tU+3T0Q8TEyf7gzKUD8FsEzCls=";
+          hash = "sha256-ahA9kIJXsFxXzEJmrgmuPPd+Kjlx+5wwUvU6e0L3DU0=";
         };
       in
       rec {
@@ -22,8 +22,7 @@
           inherit pname version elixir src mixFodDeps;
 
           nativeBuildInputs = with pkgs; [
-            gleam
-            zstd
+            zstd # for bakeware binary compression
           ];
 
           installPhase = ''
@@ -31,7 +30,7 @@
             mkdir -p $out/bin
             cp _build/prod/rel/bakeware/* $out/bin
           '';
-          dontStrip = true;
+          dontStrip = true; # kills bakeware header otherwise
         };
 
         devShell = pkgs.mkShell {
