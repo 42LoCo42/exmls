@@ -1,4 +1,4 @@
-defmodule Structs do
+defmodule ExMLS.Structs do
   use TypedStruct
 
   # 5.1.2. Signing

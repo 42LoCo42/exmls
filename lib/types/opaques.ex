@@ -1,4 +1,4 @@
-defmodule Opaques do
+defmodule ExMLS.Opaques do
   # 5.1.1. Public Keys
   @type hpke_pk :: binary()
   @type signature_pk :: binary()

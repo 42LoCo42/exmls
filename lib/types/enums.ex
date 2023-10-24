@@ -1,4 +1,4 @@
-defmodule Enums do
+defmodule ExMLS.Enums do
   use EnumType
 
   # 5.3. Credentials
