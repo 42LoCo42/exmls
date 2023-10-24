@@ -16,8 +16,7 @@
 
           hash = "sha256-wU56kAREfovnqFCz7tU+3T0Q8TEyf7gzKUD8FsEzCls=";
         };
-      in
-      rec {
+
         defaultPackage = pkgs.beamPackages.mixRelease {
           inherit pname version elixir src mixFodDeps;
 
@@ -41,5 +40,6 @@
             just
           ];
         };
-      });
+      in
+      { inherit defaultPackage devShell; });
 }
