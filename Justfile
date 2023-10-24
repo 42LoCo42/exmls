@@ -9,10 +9,23 @@ check_use name:
 		exit 1
 	fi
 
+build:
+	nix build -L
+
 test:
 	just check_use Enums
 	just check_use Structs
 	mix dialyzer
 	mix test
-	nix build -L
 
+run:
+	mix run
+
+shell:
+	iex -S mix
+
+docs:
+	mix docs
+
+clean:
+	mix deps.clean --unlock --unused
