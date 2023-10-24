@@ -8,12 +8,29 @@ Also, there is currently no MLS implementation for Elixir (2023-10-11).
 
 ** Current Status
 All the types (structs, enums, opaques) of the RFC are implemented.
+Also we have the functions for array-based binary trees from [[https://www.rfc-editor.org/rfc/rfc9420#appendix-C][Appendix C]].
 
 ** How to use this project
-If you have [[https://nixos.org/][Nix]] installed, just run ~nix build~.
-This currently builds a self-contained binary using [[https://github.com/bake-bake-bake/bakeware][Bakeware]].
-You can also ~direnv allow~ or ~nix develop~ to enter a development environment.
-A testsuite is defined in the [[file:Justfile]], run ~just test~.
+This project is designed to be used with [[https://nixos.org][Nix]] and optionally [[https://github.com/direnv/direnv][direnv]].
+Enter a development shell automatically with ~direnv allow~ or manually with ~nix develop~.
+Run ~just~ to show all tasks:
+- ~build~: hermetically builds the final self-contained binary using Nix
+- ~check_use~: an internal check, don't use this directly
+- ~clean~: remove unused dependencies
+- ~docs~: generate HTML and EPUB project documentation
+- ~help~: list all tasks
+- ~run~: run the project in the development environment
+- ~shell~: enter an interactive shell that runs the project
+- ~test~: run the full testsuite (some code sanity checks, static analysis, regular & doctests).
+  Note that the first start of the static analyser will take a long time.
+To run a task, run ~just taskname~, e.g. ~just build~.
+
+*** Building without Nix
+Running ~MIX_ENV=prod mix release~ creates the final release binary
+at ~_build/prod/rel/bakeware/exmls~.
+Note that due to missing isolation, this process will consume
+all build artifacts that are currently cached in ~_build~,
+which will unneccessarily increase the output size.
 
 ** Ultimate goals
 - a complete implementation of MLS, conforming to the RFC
