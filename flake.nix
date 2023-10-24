@@ -14,7 +14,7 @@
           pname = "mix-deps-${pname}";
           inherit version elixir src;
 
-          hash = "sha256-ahA9kIJXsFxXzEJmrgmuPPd+Kjlx+5wwUvU6e0L3DU0=";
+          hash = "sha256-wU56kAREfovnqFCz7tU+3T0Q8TEyf7gzKUD8FsEzCls=";
         };
       in
       rec {
