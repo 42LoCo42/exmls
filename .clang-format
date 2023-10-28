@@ -1,0 +1,15 @@
+# -*- mode: yaml; -*-
+UseTab: AlignWithSpaces
+TabWidth: 4
+IndentWidth: 4
+
+SpaceBeforeParens: Never
+SpaceAfterCStyleCast: true
+
+AlignAfterOpenBracket: BlockIndent
+AlignConsecutiveDeclarations:
+  Enabled: true
+AlignConsecutiveAssignments:
+  Enabled: true
+
+PointerAlignment: Left

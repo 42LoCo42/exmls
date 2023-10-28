@@ -26,7 +26,9 @@ example-*.tar
 /tmp/
 
 # other stuff
+*.so
+/.cache
 /.direnv
 /.env
+/compile_commands.json
 /result
-/build

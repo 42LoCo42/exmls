@@ -10,6 +10,7 @@ defmodule ExMLS.MixProject do
       elixir: "~> 1.15",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
+      compilers: [:elixir_make] ++ Mix.compilers(),
       releases: [
         exmls: [
           steps: [:assemble, &Bakeware.assemble/1]
@@ -35,6 +36,7 @@ defmodule ExMLS.MixProject do
       # tools
       {:bakeware, "~> 0.2.4", runtime: false},
       {:dialyxir, "~> 1.4", only: :dev, runtime: false},
+      {:elixir_make, "~> 0.7.7", runtime: false},
       {:ex_doc, "~> 0.30.9", only: :dev, runtime: false}
     ]
   end

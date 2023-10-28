@@ -3,14 +3,17 @@ defmodule ExMLS do
 
   @impl true
   def start(_type, _args) do
-    children = [
-      {
-        Bandit,
-        plug: Web.Hello, port: 37812
-      }
-    ]
+    # children = [
+    #   {
+    #     Bandit,
+    #     plug: Web.Hello, port: 37812
+    #   }
+    # ]
 
-    opts = [strategy: :one_for_one, name: ExMLS.Supervisor]
-    Supervisor.start_link(children, opts)
+    # opts = [strategy: :one_for_one, name: ExMLS.Supervisor]
+    # Supervisor.start_link(children, opts)
+
+    dbg(ExMLS.HPKE.compare(42, 1337))
+    {:ok, self()}
   end
 end

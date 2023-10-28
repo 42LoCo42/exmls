@@ -118,7 +118,7 @@ defmodule ExMLS.Tree do
   """
   def parent(x, n) do
     if x == root(n) do
-      raise "root node has no parent("
+      raise "root node has no parent"
     end
 
     k = level(x)
