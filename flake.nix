@@ -42,6 +42,8 @@
             wrapProgram $out/bin/exmls --set NIF "${nif}/nif"
           '';
           dontStrip = true; # kills bakeware header otherwise
+
+          inherit (nif) ERL_INCLUDE_PATH HPKE;
         };
 
         devShell = pkgs.mkShell {
