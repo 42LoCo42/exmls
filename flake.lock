@@ -1,5 +1,30 @@
 {
   "nodes": {
+    "argon-kg": {
+      "inputs": {
+        "flake-utils": [
+          "obscura",
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "obscura",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1692632726,
+        "narHash": "sha256-duhNLNxnycftLUATmjriI/1BXBonRhxmugXMcRE17TU=",
+        "owner": "42loco42",
+        "repo": "argon-kg",
+        "rev": "bb221b999b7c298dda2021d19ab4e695837f10ca",
+        "type": "github"
+      },
+      "original": {
+        "owner": "42loco42",
+        "repo": "argon-kg",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "inputs": {
         "systems": "systems"
@@ -17,6 +42,26 @@
         "type": "indirect"
       }
     },
+    "nimble": {
+      "inputs": {
+        "nixpkgs": [
+          "obscura",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1679323550,
+        "narHash": "sha256-JvGdeb8mO/2xa+j9zSah8B8prCDuVDrxg/sVjnLnWOM=",
+        "owner": "nix-community",
+        "repo": "flake-nimble",
+        "rev": "e68031106a51ffb88138cd827dfb6d62f1c4cfd0",
+        "type": "github"
+      },
+      "original": {
+        "id": "nimble",
+        "type": "indirect"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1696693680,
@@ -31,10 +76,36 @@
         "type": "indirect"
       }
     },
+    "obscura": {
+      "inputs": {
+        "argon-kg": "argon-kg",
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nimble": "nimble",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1698498603,
+        "narHash": "sha256-Nm7uTfNVCq46HGawfPj9wVaYqwgDCRzND2C3pSmLRDk=",
+        "owner": "42loco42",
+        "repo": "obscura",
+        "rev": "bf0d60d04d67e059b433bfb37a1de71cb4e212ac",
+        "type": "github"
+      },
+      "original": {
+        "owner": "42loco42",
+        "repo": "obscura",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "flake-utils": "flake-utils",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "obscura": "obscura"
       }
     },
     "systems": {

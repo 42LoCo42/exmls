@@ -1,7 +1,11 @@
 {
   description = "Elixir implementation of the MLS protocol";
 
-  outputs = { nixpkgs, flake-utils, ... }:
+  inputs.obscura.url = "github:42loco42/obscura";
+  inputs.obscura.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.obscura.inputs.flake-utils.follows = "flake-utils";
+
+  outputs = { nixpkgs, flake-utils, obscura, ... }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
@@ -21,6 +25,7 @@
           name = "nif";
           src = ./nif;
           ERL_INCLUDE_PATH = "${pkgs.erlang}/lib/erlang/usr/include";
+          HPKE = "${obscura.packages.${system}.libhpke}";
         };
 
         defaultPackage = pkgs.beamPackages.mixRelease {
@@ -48,7 +53,7 @@
             just
           ];
 
-          inherit (nif) ERL_INCLUDE_PATH;
+          inherit (nif) ERL_INCLUDE_PATH HPKE;
           NIF = "./nif/nif";
         };
       in
