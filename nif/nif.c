@@ -52,7 +52,7 @@ gen_kp(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[]) {
 }
 
 static ErlNifFunc funcs[] = {
-	{"gen_kp", 1, gen_kp, 0},
+	{"nif_gen_kp", 1, gen_kp, 0},
 };
 
 ERL_NIF_INIT(Elixir.ExMLS.HPKE, funcs, load, NULL, NULL, NULL);

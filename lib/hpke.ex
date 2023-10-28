@@ -1,7 +1,7 @@
 defmodule ExMLS.HPKE do
   use EnumType
 
-  @on_load :load_nifs
+  @on_load :load_nif
 
   defenum(Mode) do
     value(Base, 0)
@@ -29,10 +29,15 @@ defmodule ExMLS.HPKE do
     value(ChaCha20_Poly1305, 2)
   end
 
-  def load_nifs() do
+  @spec gen_kp(KEM.t()) :: %{sk: binary(), pk: binary()}
+  @doc """
+  Generate a random HPKE keypair for the selected KEM.
+  """
+  def gen_kp(kem), do: nif_gen_kp(kem.value())
+
+  defp load_nif() do
     System.get_env("NIF") |> String.to_charlist() |> :erlang.load_nif(nil)
   end
 
-  @spec gen_kp(non_neg_integer()) :: %{sk: binary(), pk: binary()}
-  def gen_kp(_kem_id), do: :erlang.nif_error("Load NIF!")
+  defp nif_gen_kp(_kem_id), do: :erlang.nif_error("Load NIF!")
 end
