@@ -12,7 +12,8 @@ Also, there is currently no MLS implementation for Elixir (2023-10-11).
 - a [[https://github.com/oktaysm/hpke][HPKE library]] connected via [[file:nif/nif.c][NIFs]]
 
 ** How to use this project
-This project is designed to be used with [[https://nixos.org][Nix]] and optionally [[https://github.com/direnv/direnv][direnv]].
+This project is designed to be used with [[https://nixos.org][Nix]] and optionally [[https://github.com/direnv/direnv][direnv]]
+(Use [[https://github.com/nix-community/nix-direnv][nix-direnv]] for a faster, persistent devshell).
 Enter a development shell automatically with ~direnv allow~ or manually with ~nix develop~.
 Run ~just~ to show all tasks:
 - ~build~: hermetically builds the final self-contained binary using Nix
