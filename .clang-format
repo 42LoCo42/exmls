@@ -13,5 +13,5 @@ AlignConsecutiveAssignments:
   Enabled: true
 
 AllowShortIfStatementsOnASingleLine: true
-
+BinPackArguments: false
 PointerAlignment: Left

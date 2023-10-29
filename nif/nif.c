@@ -247,8 +247,10 @@ static ERL_NIF_TERM open(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[]) {
 }
 
 static ErlNifFunc funcs[] = {
-	{"nif_gen_kp", 1, gen_kp, 0},   {"nif_setup_s", 3, setup_s, 0},
-	{"nif_setup_r", 4, setup_r, 0}, {"seal", 3, seal, 0},
+	{"nif_gen_kp", 1, gen_kp, 0},
+	{"nif_setup_s", 3, setup_s, 0},
+	{"nif_setup_r", 4, setup_r, 0},
+	{"seal", 3, seal, 0},
 	{"open", 3, open, 0},
 };
 
