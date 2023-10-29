@@ -21,13 +21,6 @@
           hash = "sha256-wU56kAREfovnqFCz7tU+3T0Q8TEyf7gzKUD8FsEzCls=";
         };
 
-        nif = pkgs.stdenv.mkDerivation {
-          name = "nif";
-          src = ./nif;
-          ERL_INCLUDE_PATH = "${pkgs.erlang}/lib/erlang/usr/include";
-          HPKE = "${obscura.packages.${system}.libhpke}";
-        };
-
         defaultPackage = pkgs.beamPackages.mixRelease {
           inherit pname version elixir src mixFodDeps;
 
@@ -35,15 +28,18 @@
             zstd # for bakeware binary compression
           ];
 
+          preBuild = ''export NIF_LOC="$out/lib/nif"'';
+
           installPhase = ''
             mix release
-            mkdir -p $out/bin
+            mkdir -p $out/bin $out/lib
             cp _build/prod/rel/bakeware/exmls $out/bin
-            wrapProgram $out/bin/exmls --set NIF "${nif}/nif"
+            cp nif/nif.so $out/lib
           '';
           dontStrip = true; # kills bakeware header otherwise
 
-          inherit (nif) ERL_INCLUDE_PATH HPKE;
+          ERL_INCLUDE_PATH = "${pkgs.erlang}/lib/erlang/usr/include";
+          HPKE = "${obscura.packages.${system}.libhpke}";
         };
 
         devShell = pkgs.mkShell {
@@ -55,8 +51,8 @@
             just
           ];
 
-          inherit (nif) ERL_INCLUDE_PATH HPKE;
-          NIF = "./nif/nif";
+          inherit (defaultPackage) ERL_INCLUDE_PATH HPKE;
+          NIF_LOC = "./nif/nif";
         };
       in
       { inherit defaultPackage devShell; });

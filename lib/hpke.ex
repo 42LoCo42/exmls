@@ -95,8 +95,12 @@ defmodule ExMLS.HPKE do
   """
   def open(_ctx, _aad, _ct), do: :erlang.nif_error("Load NIF!")
 
+  @nif_loc Application.compile_env!(:exmls, :nif_loc)
+
   defp load_nif() do
-    System.get_env("NIF") |> String.to_charlist() |> :erlang.load_nif(nil)
+    @nif_loc
+    |> String.to_charlist()
+    |> :erlang.load_nif(nil)
   end
 
   defp nif_gen_kp(_kem_id), do: :erlang.nif_error("Load NIF!")
