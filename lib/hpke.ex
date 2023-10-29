@@ -35,9 +35,71 @@ defmodule ExMLS.HPKE do
   """
   def gen_kp(kem), do: nif_gen_kp(kem.value())
 
+  @spec setup_s(
+          %{mode: Mode.t(), kem: KEM.t(), kdf: KDF.t(), aead: AEAD.t()},
+          binary(),
+          String.t()
+        ) :: %{ctx: binary(), enc: binary()}
+  @doc """
+  Set up the sender context.
+  TODO: Currently, no pre-shared keys are supported.
+  """
+  def setup_s(%{mode: mode, kem: kem, kdf: kdf, aead: aead}, pk, info) do
+    nif_setup_s(
+      %{
+        mode: mode.value(),
+        kem: kem.value(),
+        kdf: kdf.value(),
+        aead: aead.value()
+      },
+      pk,
+      info
+    )
+  end
+
+  @spec setup_r(
+          %{mode: Mode.t(), kem: KEM.t(), kdf: KDF.t(), aead: AEAD.t()},
+          binary(),
+          binary(),
+          String.t()
+        ) :: binary()
+  @doc """
+  Set up the receiver context.
+  TODO: Currently, no pre-shared keys are supported.
+  """
+  def setup_r(%{mode: mode, kem: kem, kdf: kdf, aead: aead}, enc, sk, info) do
+    nif_setup_r(
+      %{
+        mode: mode.value(),
+        kem: kem.value(),
+        kdf: kdf.value(),
+        aead: aead.value()
+      },
+      enc,
+      sk,
+      info
+    )
+  end
+
+  @spec seal(binary(), String.t(), String.t()) :: binary()
+  @doc """
+  Encrypt a message.
+  The given context `ctx` must have been created by `setup_s`.
+  """
+  def seal(_ctx, _aad, _msg), do: :erlang.nif_error("Load NIF!")
+
+  @spec open(binary(), String.t(), binary()) :: String.t()
+  @doc """
+  Decrypt a message.
+  The given context `ctx` must have been created by `setup_r`.
+  """
+  def open(_ctx, _aad, _ct), do: :erlang.nif_error("Load NIF!")
+
   defp load_nif() do
     System.get_env("NIF") |> String.to_charlist() |> :erlang.load_nif(nil)
   end
 
   defp nif_gen_kp(_kem_id), do: :erlang.nif_error("Load NIF!")
+  defp nif_setup_s(_suite, _pk, _info), do: :erlang.nif_error("Load NIF!")
+  defp nif_setup_r(_suite, _enc, _sk, _info), do: :erlang.nif_error("Load NIF!")
 end
