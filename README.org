@@ -9,7 +9,7 @@ Also, there is currently no MLS implementation for Elixir (2023-10-11).
 ** Current Status
 - all types (structs, enums, opaques) of the RFC
 - functions for array-based binary trees from [[https://www.rfc-editor.org/rfc/rfc9420#appendix-C][Appendix C]]
-- a HPKE C library, connected via [[file:nif/nif.c][NIFs]]
+- a [[https://github.com/oktaysm/hpke][HPKE library]] connected via [[file:nif/nif.c][NIFs]]
 
 ** How to use this project
 This project is designed to be used with [[https://nixos.org][Nix]] and optionally [[https://github.com/direnv/direnv][direnv]].
