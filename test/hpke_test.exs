@@ -34,7 +34,7 @@ defmodule HPKETest do
       msg = "msg"
 
       ct = ExMLS.HPKE.seal(ctx_s, aad, msg)
-      dbg(:base64.encode_to_string(enc))
+      dbg(:base64.encode_to_string(ct))
 
       # create receiver context
       ctx_r = ExMLS.HPKE.setup_r(suite, enc, sk, info)
