@@ -5,10 +5,9 @@
 
 #define ASIZ(x) (sizeof(x) / sizeof(x[0]))
 
-#define BAD(...)                                                               \
+#define BAD(msg)                                                               \
 	{                                                                          \
-		fprintf(stderr, __VA_ARGS__);                                          \
-		fputc('\n', stderr);                                                   \
+		fprintf(stderr, "%s:%d: BADARG: %s\n", __FILE__, __LINE__, msg);       \
 		return enif_make_badarg(env);                                          \
 	}
 
@@ -16,7 +15,7 @@
 
 #define ERR(msg)                                                               \
 	{                                                                          \
-		fputs(msg, stderr);                                                    \
+		fprintf(stderr, "%s:%d: ERROR: %s\n", __FILE__, __LINE__, msg);        \
 		return enif_make_tuple2(                                               \
 			env, err_atom, enif_make_string(env, msg, ERL_NIF_LATIN1)          \
 		);                                                                     \
@@ -146,7 +145,7 @@ static ERL_NIF_TERM
 setup_s(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[]) {
 	(void) argc;
 
-	// get args ===============================================================
+	// get args ================================================================
 	hpke_t       suite = {0};
 	ERL_NIF_TERM res   = get_suite(env, argv[0], &suite);
 	if(res != 0) return res;
