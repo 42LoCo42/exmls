@@ -89,6 +89,18 @@ defmodule ExMLS.HPKE do
     )
   end
 
+  def seal_base(suite, pk, info, aad, msg) do
+    {:ok, %{ctx: ctx, enc: enc}} = setup_s(suite, pk, info)
+    {:ok, ct} = seal(ctx, aad, msg)
+    %{enc: enc, ct: ct}
+  end
+
+  def open_base(suite, enc, sk, info, aad, ct) do
+    {:ok, ctx} = setup_r(suite, enc, sk, info)
+    {:ok, msg} = open(ctx, aad, ct)
+    msg
+  end
+
   @spec seal(binary(), String.t(), String.t()) :: {:ok, binary()} | err
   @doc """
   Encrypt a message.

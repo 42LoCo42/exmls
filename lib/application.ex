@@ -1,6 +1,8 @@
 defmodule ExMLS do
   use Application
 
+  @base_label "MLS 1.0 "
+
   @impl true
   def start(_type, _args) do
     # children = [
@@ -18,6 +20,7 @@ defmodule ExMLS do
 
     ciphersuite = %{
       hpke: %{
+        mode: ExMLS.HPKE.Mode.Base,
         kem: ExMLS.HPKE.KEM.X25519,
         kdf: ExMLS.HPKE.KDF.SHA256,
         aead: ExMLS.HPKE.AEAD.AES128_GCM
@@ -29,9 +32,15 @@ defmodule ExMLS do
 
     dbg(ciphersuite)
 
+    # generate & print HPKE keypair
     {:ok, %{pk: hpke_pk, sk: hpke_sk}} = ExMLS.HPKE.gen_kp(ciphersuite.hpke.kem)
     dbg(%{pk: :base64.encode_to_string(hpke_pk), sk: :base64.encode_to_string(hpke_sk)})
 
+    # encrypt & decrypt
+    %{enc: enc, ct: ct} = encrypt_with_label(ciphersuite.hpke, hpke_pk, "label", "msg")
+    dbg(decrypt_with_label(ciphersuite.hpke, hpke_sk, "label", enc, ct))
+
+    # generate & print sign keypair
     {sign_pk, sign_sk} = :crypto.generate_key(ciphersuite.sign.type, ciphersuite.sign.algo)
     dbg(%{pk: :base64.encode_to_string(sign_pk), sk: :base64.encode_to_string(sign_sk)})
 
@@ -40,20 +49,18 @@ defmodule ExMLS do
       content: "content"
     }
 
+    # sign & verify
     signature = sign_with_label(ciphersuite.sign, ciphersuite.hash, sign_sk, data)
-    dbg(:base64.encode_to_string(signature))
     dbg(verify_with_label(ciphersuite.sign, ciphersuite.hash, sign_pk, data, signature))
 
     {:ok, self()}
   end
 
-  @sign_label "MLS 1.0 "
-
   def sign_with_label(sign, hash, sk, data) do
     :crypto.sign(
       sign.type,
       hash,
-      @sign_label <> data.label <> data.content,
+      @base_label <> data.label <> data.content,
       [sk, sign.algo]
     )
   end
@@ -62,9 +69,17 @@ defmodule ExMLS do
     :crypto.verify(
       sign.type,
       hash,
-      @sign_label <> data.label <> data.content,
+      @base_label <> data.label <> data.content,
       signature,
       [pk, sign.algo]
     )
+  end
+
+  def encrypt_with_label(hpke, pk, label, msg) do
+    ExMLS.HPKE.seal_base(hpke, pk, @base_label <> label, "", msg)
+  end
+
+  def decrypt_with_label(hpke, sk, label, enc, ct) do
+    ExMLS.HPKE.open_base(hpke, enc, sk, @base_label <> label, "", ct)
   end
 end
