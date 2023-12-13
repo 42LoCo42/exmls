@@ -46,4 +46,17 @@ defmodule CryptoTest do
 
     assert :crypto.verify(algorithm, hash, msg, signature, [public, curve])
   end
+
+  test "erlang crypto -> MAC" do
+    info = :crypto.hash_info(:sha256)
+    key = :crypto.strong_rand_bytes(info.size)
+
+    mac1 = :crypto.mac(:hmac, :sha256, key, "data")
+    mac2 = :crypto.mac(:hmac, :sha256, key, "data")
+    mac3 = :crypto.mac(:hmac, :sha256, key, "fail")
+
+    assert mac1 == mac2
+    assert mac1 != mac3
+    assert mac2 != mac3
+  end
 end

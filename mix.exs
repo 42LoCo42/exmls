@@ -30,6 +30,7 @@ defmodule ExMLS.MixProject do
     [
       {:bandit, "~> 0.7.7"},
       {:enum_type, "~> 1.1"},
+      {:msgpax, "~> 2.4"},
       {:typed_struct, "~> 0.3.0"},
       {:websock_adapter, "~> 0.5.4"},
 

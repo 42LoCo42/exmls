@@ -34,6 +34,8 @@ defmodule ExMLS.Structs do
   # 6. Message Framing
 
   typedstruct(module: Sender) do
+    @derive [{Msgpax.Packer, []}]
+
     field(:sender_type, ExMLS.Enums.SenderType.t(), enforce: true)
 
     field(:leaf_index, non_neg_integer())
@@ -41,14 +43,17 @@ defmodule ExMLS.Structs do
   end
 
   typedstruct(module: FramedContent, enforce: true) do
+    @derive [{Msgpax.Packer, []}]
+
     field(:group_id, binary())
     field(:epoch, non_neg_integer())
     field(:sender, ExMLS.Structs.Sender.t())
     field(:authenticated_data, binary())
 
-    field(:application_data, binary())
-    field(:proposal, ExMLS.Structs.Proposal.t())
-    field(:commit, ExMLS.Structs.Commit.t())
+    field(:content_type, ExMLS.Enums.ContentType.t())
+    field(:application_data, binary(), enforce: false)
+    field(:proposal, ExMLS.Structs.Proposal.t(), enforce: false)
+    field(:commit, ExMLS.Structs.Commit.t(), enforce: false)
   end
 
   typedstruct(module: MLSMessage) do
@@ -71,6 +76,8 @@ defmodule ExMLS.Structs do
   # 6.1. Content Authentication
 
   typedstruct(module: FramedContentTBS, enforce: true) do
+    @derive [{Msgpax.Packer, []}]
+
     field(:version, ExMLS.Enums.ProtocolVersion.t(), default: ExMLS.Enums.ProtocolVersion.MLS10)
     field(:wire_format, ExMLS.Enums.WireFormat.t())
     field(:content, ExMLS.Structs.FramedContent.t())

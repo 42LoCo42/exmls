@@ -53,6 +53,43 @@ defmodule ExMLS do
     signature = sign_with_label(ciphersuite.sign, ciphersuite.hash, sign_sk, data)
     dbg(verify_with_label(ciphersuite.sign, ciphersuite.hash, sign_pk, data, signature))
 
+    sender = %ExMLS.Structs.Sender{
+      sender_type: ExMLS.Enums.SenderType.Member,
+      leaf_index: 0
+    }
+
+    content = %ExMLS.Structs.FramedContent{
+      group_id: 0,
+      epoch: 0,
+      sender: sender,
+      authenticated_data: "authed data",
+      content_type: ExMLS.Enums.ContentType.Application,
+      application_data: "app data"
+    }
+
+    tbs = %ExMLS.Structs.FramedContentTBS{
+      wire_format: ExMLS.Enums.WireFormat.Reserved,
+      content: content
+    }
+
+    auth = %ExMLS.Structs.FramedContentAuthData{
+      signature:
+        sign_with_label(
+          ciphersuite.sign,
+          ciphersuite.hash,
+          sign_sk,
+          %ExMLS.Structs.SignContent{
+            label: "FramedContentTBS",
+            content: Msgpax.pack!(tbs, iodata: false)
+          }
+        )
+    }
+
+    msg = %ExMLS.Structs.PublicMessage{
+      content: content,
+      auth: auth
+    }
+
     {:ok, self()}
   end
 
