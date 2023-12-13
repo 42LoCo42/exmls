@@ -1,5 +1,6 @@
 CFLAGS := \
 	-Wall -Wextra -Werror \
+	-O3 \
 	-fPIC -shared \
 	-I $(ERL_INCLUDE_PATH) \
 	-I $(HPKE)/include/hpke \

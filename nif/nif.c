@@ -136,6 +136,30 @@ gen_kp(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[]) {
 	return OK(map);
 }
 
+// kem: uint
+// sk: binary
+// -> pk: binary
+static ERL_NIF_TERM
+drv_kp(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[]) {
+	(void) argc;
+
+	// get args ================================================================
+	uint kem_id = 0;
+	if(!enif_get_uint(env, argv[0], &kem_id)) BAD("kem_id: not uint");
+	getbin(sk, argv[1]);
+
+	// allocate public key
+	uint32_t pk_size = 0;
+	HPKE_Keysize(kem_id, NULL, &pk_size, NULL);
+
+	ErlNifBinary pk = {0};
+	enif_alloc_binary(pk_size, &pk);
+
+	// derive public key
+	HPKE_Derive(kem_id, sk.data, pk.data);
+	return OK(enif_make_binary(env, &pk));
+}
+
 // suite: %{mode: uint, kem: uint, kdf: uint, aead: uint}
 // pk: binary
 // info: string
@@ -284,6 +308,7 @@ static ERL_NIF_TERM open(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[]) {
 
 static ErlNifFunc funcs[] = {
 	{"nif_gen_kp", 1, gen_kp, 0},
+	{"nif_drv_kp", 2, drv_kp, 0},
 	{"nif_setup_s", 3, setup_s, 0},
 	{"nif_setup_r", 4, setup_r, 0},
 	{"seal", 3, seal, 0},

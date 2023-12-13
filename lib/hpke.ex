@@ -29,28 +29,36 @@ defmodule ExMLS.HPKE do
     value(ChaCha20_Poly1305, 2)
   end
 
-  @spec gen_kp(KEM.t()) :: %{sk: binary(), pk: binary()}
+  @type err :: {:err, String.t()}
+
+  @spec gen_kp(KEM.t()) :: {:ok, %{sk: binary(), pk: binary()}} | err
   @doc """
   Generate a random HPKE keypair for the selected KEM.
   """
   def gen_kp(kem), do: nif_gen_kp(kem.value())
 
+  @spec drv_kp(KEM.t(), binary()) :: {:ok, binary()} | err
+  @doc """
+  Derive a public from a secret key for the selected KEM.
+  """
+  def drv_kp(kem, pk), do: nif_drv_kp(kem.value(), pk)
+
   @spec setup_s(
           %{mode: Mode.t(), kem: KEM.t(), kdf: KDF.t(), aead: AEAD.t()},
           binary(),
           String.t()
-        ) :: %{ctx: binary(), enc: binary()}
+        ) :: {:ok, %{ctx: binary(), enc: binary()}} | err
   @doc """
   Set up the sender context.
   TODO: Currently, no pre-shared keys are supported.
   """
-  def setup_s(%{mode: mode, kem: kem, kdf: kdf, aead: aead}, pk, info) do
+  def setup_s(suite, pk, info) do
     nif_setup_s(
       %{
-        mode: mode.value(),
-        kem: kem.value(),
-        kdf: kdf.value(),
-        aead: aead.value()
+        mode: suite.mode.value(),
+        kem: suite.kem.value(),
+        kdf: suite.kdf.value(),
+        aead: suite.aead.value()
       },
       pk,
       info
@@ -62,18 +70,18 @@ defmodule ExMLS.HPKE do
           binary(),
           binary(),
           String.t()
-        ) :: binary()
+        ) :: {:ok, binary()} | err
   @doc """
   Set up the receiver context.
   TODO: Currently, no pre-shared keys are supported.
   """
-  def setup_r(%{mode: mode, kem: kem, kdf: kdf, aead: aead}, enc, sk, info) do
+  def setup_r(suite, enc, sk, info) do
     nif_setup_r(
       %{
-        mode: mode.value(),
-        kem: kem.value(),
-        kdf: kdf.value(),
-        aead: aead.value()
+        mode: suite.mode.value(),
+        kem: suite.kem.value(),
+        kdf: suite.kdf.value(),
+        aead: suite.aead.value()
       },
       enc,
       sk,
@@ -81,14 +89,14 @@ defmodule ExMLS.HPKE do
     )
   end
 
-  @spec seal(binary(), String.t(), String.t()) :: binary()
+  @spec seal(binary(), String.t(), String.t()) :: {:ok, binary()} | err
   @doc """
   Encrypt a message.
   The given context `ctx` must have been created by `setup_s`.
   """
   def seal(_ctx, _aad, _msg), do: :erlang.nif_error("Load NIF!")
 
-  @spec open(binary(), String.t(), binary()) :: String.t()
+  @spec open(binary(), String.t(), binary()) :: {:ok, String.t()} | err
   @doc """
   Decrypt a message.
   The given context `ctx` must have been created by `setup_r`.
@@ -104,6 +112,7 @@ defmodule ExMLS.HPKE do
   end
 
   defp nif_gen_kp(_kem_id), do: :erlang.nif_error("Load NIF!")
+  defp nif_drv_kp(_kem_id, _pk), do: :erlang.nif_error("Load NIF!")
   defp nif_setup_s(_suite, _pk, _info), do: :erlang.nif_error("Load NIF!")
   defp nif_setup_r(_suite, _enc, _sk, _info), do: :erlang.nif_error("Load NIF!")
 end
