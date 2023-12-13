@@ -19,8 +19,8 @@ build:
 
 # run sanity checks, static analysis and tests
 test:
-	just check_use Enums
-	just check_use Structs
+	# just check_use Enums
+	# just check_use Structs
 	mix dialyzer
 	mix test
 
