@@ -1,7 +1,7 @@
 defmodule CryptoTest do
   use ExUnit.Case, async: true
 
-  test "erlang crypto module" do
+  test "erlang crypto -> AEAD" do
     cipher = :chacha20_poly1305
     dbg(cipher)
 
@@ -25,5 +25,25 @@ defmodule CryptoTest do
 
     dbg(out = :crypto.crypto_one_time_aead(cipher, key, iv, ctxt, aad, caad, false))
     assert Enum.join(txt) == out
+  end
+
+  test "erlang crypto -> sign/verify" do
+    msg = "foobar"
+
+    algorithm = :eddsa
+    curve = :ed25519
+    hash = :sha512
+
+    {public, secret} = :crypto.generate_key(algorithm, curve)
+
+    dbg(%{
+      public: :base64.encode_to_string(public),
+      secret: :base64.encode_to_string(secret)
+    })
+
+    signature = :crypto.sign(algorithm, hash, msg, [secret, curve])
+    dbg(:base64.encode_to_string(signature))
+
+    assert :crypto.verify(algorithm, hash, msg, signature, [public, curve])
   end
 end

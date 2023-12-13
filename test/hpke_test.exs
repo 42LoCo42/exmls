@@ -7,6 +7,10 @@ defmodule HPKETest do
       # create keypair
       {:ok, %{sk: sk, pk: pk}} = ExMLS.HPKE.gen_kp(kem)
 
+      # derive public key
+      {:ok, derived_pk} = ExMLS.HPKE.drv_kp(kem, sk)
+      assert pk == derived_pk
+
       dbg(%{
         kem: kem,
         sk: :base64.encode_to_string(sk),
