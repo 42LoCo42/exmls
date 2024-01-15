@@ -21,8 +21,8 @@ defmodule ExMLS.MixProject do
 
   def application do
     [
-      extra_applications: [:logger],
-      mod: {ExMLS, []}
+      extra_applications: [:logger]
+      # mod: {ExMLS, []}
     ]
   end
 
